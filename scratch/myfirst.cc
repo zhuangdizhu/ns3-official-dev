@@ -37,6 +37,7 @@ main (int argc, char *argv[])
   PointToPointHelper pointToPoint;
   pointToPoint.SetDeviceAttribute ("DataRate", StringValue ("5Mbps"));
   pointToPoint.SetChannelAttribute ("Delay", StringValue ("2ms"));
+  //pointToPoint.EnablePcapAll ("myfirst");
 
   NetDeviceContainer devices;
   devices = pointToPoint.Install (nodes);
@@ -63,6 +64,9 @@ main (int argc, char *argv[])
   ApplicationContainer clientApps = echoClient.Install (nodes.Get (0));
   clientApps.Start (Seconds (2.0));
   clientApps.Stop (Seconds (10.0));
+  AsciiTraceHelper ascii;
+  pointToPoint.EnableAsciiAll (ascii.CreateFileStream ("myfirst.tr")); 
+  pointToPoint.EnablePcapAll ("myfirst");
 
   Simulator::Run ();
   Simulator::Destroy ();
